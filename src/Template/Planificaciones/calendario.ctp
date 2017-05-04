@@ -1,5 +1,4 @@
 <?php
-
 $tipo_semana = 1;
 $tipo_mes = 1;
 
@@ -97,6 +96,25 @@ if ($mes == 1) {
 
 //$this->Html->link(' << ', ['controller' => 'Planificaciones', 'action' => 'calendario', $mes, $AnoAnterioAno])
 
+echo '<center>';
+foreach ($canchas as $cancha) {
+    echo $this->Html->link(__($cancha->nombre), ['action' => 'index', '*', $cancha->id], ['class' => 'btn btn-info']);
+    echo '&nbsp;&nbsp;&nbsp;';
+}
+echo '</center>';
+?>
+
+<br/>
+<div class="row">
+    <div class="col-xs-8">
+        <h3 class="box-title"><?= __('Calendario') ?></h3>        
+    </div><!-- /.box-header -->
+    <div class="col-xs-4">
+        <?= $this->Html->link(__('Listar Planificaciones'), ['controller' => 'Planificaciones', 'action' => 'index'], ['class' => 'btn btn-success', 'escape' => false]) ?>
+    </div>
+</div>
+
+<?php
 print "<table style=\"font-family:arial;font-size:14px\" bordercolor='navy' align='center' border='0' cellpadding='1' cellspacing='1' width='80%' height='500px'>";
 print " <tr>";
 print " <td colspan=10>";

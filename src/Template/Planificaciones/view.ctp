@@ -11,7 +11,7 @@
     <!-- info row -->
     <div class="row invoice-info">
         <div class="col-sm-9 invoice-col">
-            <b>Lugar:</b> <?= h($planificacione->lugar) ?><br/>
+            <b>Lugar:</b> <?= h($planificacione->cancha->nombre) ?><br/>
             <b>Estatus:</b> <?= h($planificacione->activo == 1 ? 'Activo' : 'Inactivo') ?><br/>
             <br/>
             <address>

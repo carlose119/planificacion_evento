@@ -40,6 +40,10 @@ class PlanificacionesTable extends Table {
         $this->hasMany('PlanificacionDetalles', [
             'foreignKey' => 'planificacion_id'
         ]);
+        
+        $this->belongsTo('Canchas', [
+            'foreignKey' => 'cancha_id'
+        ]);
     }
 
     /**
@@ -54,18 +58,18 @@ class PlanificacionesTable extends Table {
                 ->allowEmpty('id', 'create');
 
         $validator
-                ->allowEmpty('evento');
+                ->notEmpty('evento', 'Ingrese el nombre del evento');
 
         $validator
-                ->allowEmpty('lugar');
+                ->notEmpty('cancha_id', 'Seleccione la cancha');
 
         $validator
                 ->date('fecha')
-                ->allowEmpty('fecha');
+                ->notEmpty('fecha', 'Seleccione la fecha');
 
         $validator
                 ->time('hora')
-                ->allowEmpty('hora');
+                ->notEmpty('hora', 'Seleccione la hora');
 
         $validator
                 ->allowEmpty('descripcion');

@@ -12,7 +12,7 @@
 <section class="content-header">
     <h1>
         <?= $this->fetch('title') ?>
-        <small>Panel de Control</small>
+        <small><?= $this->Html->link(__('Panel de Control'), ['controller' => 'Planificaciones', 'action' => 'calendario']) ?></small>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> <?= $pages ?></a></li>

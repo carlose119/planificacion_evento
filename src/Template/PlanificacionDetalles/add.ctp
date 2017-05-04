@@ -54,6 +54,9 @@
         <div class="box-header">
             <h3 class="box-title"><?= __('Agregar Detalle') ?></h3>
         </div><!-- /.box-header -->
+        <div class="pull-right">
+            <?= $this->Html->link('<i class="fa fa-plus"></i> ' . __('Agregar Trabajador'), ['controller' => 'Trabajadores', 'action' => 'add', $planificacion_id], ['class' => 'btn btn-success', 'escape' => false]) ?>
+        </div>
         <?= $this->Form->create($planificacionDetalle) ?>
         <div class="box-body">
             <?= $this->element('../PlanificacionDetalles/Element/input') ?>            

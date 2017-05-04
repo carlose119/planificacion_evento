@@ -11,10 +11,10 @@ use Cake\Event\Event;
  * @property \App\Model\Table\TrabajadoresTable $Trabajadores
  */
 class TrabajadoresController extends AppController {
-    
+
     public function beforeFilter(Event $event) {
         parent::beforeFilter($event);
-        
+
         $this->Security->config('unlockedActions', ['add', 'edit']);
     }
 
@@ -33,8 +33,8 @@ class TrabajadoresController extends AppController {
 
         $this->set(compact('trabajadores'));
         $this->set('_serialize', ['trabajadores']);
-        
-        $this->_auditoria($this->request->params['controller'], 0, $this->request->params['action'].': Listo a los trabajadores');
+
+        $this->_auditoria($this->request->params['controller'], 0, $this->request->params['action'] . ': Listo a los trabajadores');
     }
 
     /**
@@ -58,19 +58,22 @@ class TrabajadoresController extends AppController {
      *
      * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
      */
-    public function add() {
+    public function add($planificacion_id = null) {
         $trabajadore = $this->Trabajadores->newEntity();
         if ($this->request->is('post')) {
             $trabajadore = $this->Trabajadores->patchEntity($trabajadore, $this->request->data);
             if ($this->Trabajadores->save($trabajadore)) {
                 $this->Flash->success(__('El trabajador se registro con exito.'));
-                $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'].': Agrego un trabajador');
+                $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'] . ': Agrego un trabajador');
+                if ($planificacion_id != null) {
+                    return $this->redirect(['controller' => 'PlanificacionDetalles', 'action' => 'add', $planificacion_id]);
+                }
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El trabajador no se pudo registrar. Por favor, intentelo de nuevo.'));
         }
         $cargos = $this->Trabajadores->Cargos->find('list', ['conditions' => ['Cargos.eliminado' => 0]]);
-        $this->set(compact('trabajadore', 'cargos'));
+        $this->set(compact('trabajadore', 'cargos', 'planificacion_id'));
         $this->set('_serialize', ['trabajadore']);
     }
 
@@ -89,7 +92,7 @@ class TrabajadoresController extends AppController {
             $trabajadore = $this->Trabajadores->patchEntity($trabajadore, $this->request->data);
             if ($this->Trabajadores->save($trabajadore)) {
                 $this->Flash->success(__('El trabajado no se pudo actualizar.'));
-                $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'].': Edito un trabajador');
+                $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'] . ': Edito un trabajador');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El trabajador no se pudo actualizar. Por favor, intentelo de nuevo.'));
@@ -112,7 +115,7 @@ class TrabajadoresController extends AppController {
         //if ($this->Trabajadores->delete($trabajadore)) {
         $trabajadore->eliminado = 1;
         if ($this->Trabajadores->save($trabajadore)) {
-            $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'].': Elimino un trabajador');
+            $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'] . ': Elimino un trabajador');
             $this->Flash->success(__('El trabajador se elimino con exito.'));
         } else {
             $this->Flash->error(__('El trabajador no se pudo eliminar. Por favor, intentelo de nuevo.'));

@@ -1,18 +1,29 @@
 <div class="box col-md-9">
+
+    <br/>
+    <center>
+        <?php
+        foreach ($canchas as $cancha) {
+            echo $this->Html->link(__($cancha->nombre), ['action' => 'index', '*', $cancha->id], ['class' => 'btn btn-info']);
+            echo '&nbsp;&nbsp;&nbsp;';
+        }
+        ?>
+    </center>
+
     <div class="box-header">
-        <h3 class="box-title"><?= __('Planificaciones') ?> <?php if($fecha != null) echo ' - ' . date("d-m-Y", strtotime($fecha)); ?></h3>        
+        <h3 class="box-title"><?= __('Planificaciones') ?> <?php if ($fecha != null) echo ' - ' . date("d-m-Y", strtotime($fecha)); ?></h3>        
     </div><!-- /.box-header -->
     <div class="pull-right">
         <?= $this->Html->link('<i class="fa fa-plus"></i> ' . __('Agregar'), ['controller' => 'Planificaciones', 'action' => 'add'], ['class' => 'btn btn-success', 'escape' => false]) ?>
     </div>
-    <div class="box-body table-responsive">
+    <div class="box-body table-responsive">        
 
         <?php if ($planificaciones->count() > 0): ?>
             <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th scope="col"><?= $this->Paginator->sort('evento') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('lugar') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('cancha_id') ?></th>
                         <th scope="col"><?= $this->Paginator->sort('fecha') ?></th>
                         <th scope="col"><?= $this->Paginator->sort('hora') ?></th>
                         <th scope="col"><?= $this->Paginator->sort('activo') ?></th>
@@ -25,7 +36,7 @@
                     <?php foreach ($planificaciones as $planificacione): ?>
                         <tr>
                             <td><?= h($planificacione->evento) ?></td>
-                            <td><?= h($planificacione->lugar) ?></td>
+                            <td><?= h($planificacione->cancha->nombre) ?></td>
                             <td><?= h($this->Time->format($planificacione->fecha, 'dd-MM-YYYY')) ?></td>
                             <td><?= h($this->Time->format($planificacione->hora, 'HH:mm:ss')) ?></td>
                             <td><?= h($planificacione->activo == 1 ? 'Si' : 'No') ?></td>
@@ -52,6 +63,6 @@
             </div>
         </div>
     <?php else: ?>
-        <h3>No hay eventos registrado para este dia</h3>
+        <h3>No hay eventos registrados para este dia/cancha.</h3>
     <?php endif; ?>
 </div>

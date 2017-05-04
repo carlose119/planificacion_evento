@@ -71,6 +71,17 @@
             </ul>
         </li>
         
+        <li class="treeview <?php if(in_array($controller, ['Canchas'])) echo 'active'; ?>">
+            <a href="#">
+                <i class="fa fa-bars"></i> <span>Canchas</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+                <li><?= $this->Html->link('<i class="fa fa-angle-double-right"></i> ' . __('Agregar Cancha'), ['controller' => 'Canchas', 'action' => 'add'], ['escape' => false]) ?></li>
+                <li><?= $this->Html->link('<i class="fa fa-angle-double-right"></i> ' . __('Listar Canchas'), ['controller' => 'Canchas', 'action' => 'index'], ['escape' => false]) ?></li>
+            </ul>
+        </li>
+        
         <li class="treeview <?php if(in_array($controller, ['Planificaciones', 'PlanificacionDetalles'])) echo 'active'; ?>">
             <a href="#">
                 <i class="fa fa-calendar"></i> <span>Planificación</span>

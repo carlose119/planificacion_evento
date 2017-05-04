@@ -49,12 +49,12 @@
         <?= $this->element('header') ?>
         <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
-            <aside class="left-side sidebar-offcanvas">
+            <aside class="left-side sidebar-offcanvas collapse-left">
                 <?= $this->element('left-side-column') ?>
             </aside>
 
             <!-- Right side column. Contains the navbar and content of the page -->
-            <aside class="right-side">
+            <aside class="right-side strech">
                 <?= $this->element('content-header') ?>
 
                 <section class="content">

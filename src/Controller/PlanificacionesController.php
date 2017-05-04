@@ -23,20 +23,35 @@ class PlanificacionesController extends AppController {
      *
      * @return \Cake\Network\Response|null
      */
-    public function index($fecha = null) {
+    public function index($fecha = null, $cancha_id = null) {
+        $fecha = $fecha == '*' ? null : $fecha;
+        $cancha_id = $cancha_id == '*' ? null : $cancha_id;
+
         $conditions = '';
-        if($fecha != null){
-            $conditions .= ' AND Planificaciones.fecha = "'.$fecha.'" ';
+        if ($fecha != null) {
+            $conditions .= ' AND Planificaciones.fecha = "' . $fecha . '" ';
+        }
+        if ($cancha_id != null) {
+            $conditions .= ' AND Planificaciones.cancha_id = "' . $cancha_id . '" ';
         }
         $this->paginate = [
             'conditions' => 'Planificaciones.eliminado = 0' . $conditions,
-            'order' => ['Planificaciones.id' => 'DESC']
+            'order' => ['Planificaciones.id' => 'DESC'],
+            'contain' => ['Canchas']
         ];
         $planificaciones = $this->paginate($this->Planificaciones);
 
         $this->set(compact('planificaciones', 'fecha'));
         $this->set('_serialize', ['planificaciones']);
         $this->_auditoria($this->request->params['controller'], 0, $this->request->params['action'] . ': Listo las planificaciones');
+
+        $canchas = $this->Planificaciones->Canchas->find('all', [
+            'conditions' => [
+                'Canchas.eliminado' => 0,
+                'Canchas.activo' => 1
+            ]
+        ]);
+        $this->set(compact('canchas'));
     }
 
     /**
@@ -48,7 +63,7 @@ class PlanificacionesController extends AppController {
      */
     public function view($id = null) {
         $planificacione = $this->Planificaciones->get($id, [
-            'contain' => []
+            'contain' => ['Canchas']
         ]);
         $planificacionDetalles = $this->Planificaciones->PlanificacionDetalles->find('all', ['conditions' => ['PlanificacionDetalles.planificacion_id' => $id, 'PlanificacionDetalles.eliminado' => 0]])->contain(['Trabajadores', 'Cargos']);
         //pj($planificacionDetalles);
@@ -73,7 +88,8 @@ class PlanificacionesController extends AppController {
             }
             $this->Flash->error(__('La planificación no se pudo registrar. Por favor, intentelo de nuevo.'));
         }
-        $this->set(compact('planificacione'));
+        $canchas = $this->Planificaciones->Canchas->find('list', ['conditions' => ['Canchas.eliminado' => 0, 'Canchas.activo' => 1]]);
+        $this->set(compact('planificacione', 'canchas'));
         $this->set('_serialize', ['planificacione']);
     }
 
@@ -97,7 +113,8 @@ class PlanificacionesController extends AppController {
             }
             $this->Flash->error(__('La planificación no se pudo actualizar. Por favor, intentelo de nuevo.'));
         }
-        $this->set(compact('planificacione'));
+        $canchas = $this->Planificaciones->Canchas->find('list', ['conditions' => ['Canchas.eliminado' => 0, 'Canchas.activo' => 1]]);
+        $this->set(compact('planificacione', 'canchas'));
         $this->set('_serialize', ['planificacione']);
     }
 
@@ -145,6 +162,14 @@ class PlanificacionesController extends AppController {
         $planificaciones = $this->Planificaciones->find('all', ['conditions' => ['Planificaciones.eliminado' => 0, 'Planificaciones.fecha >=' => $fecha_desde, 'Planificaciones.fecha <= ' => $fecha_hasta]]);
         //pj($planificaciones);
         $this->set(compact('planificaciones'));
+
+        $canchas = $this->Planificaciones->Canchas->find('all', [
+            'conditions' => [
+                'Canchas.eliminado' => 0,
+                'Canchas.activo' => 1
+            ]
+        ]);
+        $this->set(compact('canchas'));
     }
 
 }
