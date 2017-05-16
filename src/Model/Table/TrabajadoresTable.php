@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
@@ -21,8 +22,7 @@ use Cake\Validation\Validator;
  *
  * @mixin \Cake\ORM\Behavior\TimestampBehavior
  */
-class TrabajadoresTable extends Table
-{
+class TrabajadoresTable extends Table {
 
     /**
      * Initialize method
@@ -30,8 +30,7 @@ class TrabajadoresTable extends Table
      * @param array $config The configuration for the Table.
      * @return void
      */
-    public function initialize(array $config)
-    {
+    public function initialize(array $config) {
         parent::initialize($config);
 
         $this->table('trabajadores');
@@ -43,6 +42,11 @@ class TrabajadoresTable extends Table
         $this->belongsTo('Cargos', [
             'foreignKey' => 'cargo_id'
         ]);
+        $this->belongsToMany('Canchas', [
+            'foreignKey' => 'trabajador_id',
+            'targetForeignKey' => 'cancha_id',
+            'joinTable' => 'canchas_trabajadores'
+        ]);
     }
 
     /**
@@ -51,38 +55,37 @@ class TrabajadoresTable extends Table
      * @param \Cake\Validation\Validator $validator Validator instance.
      * @return \Cake\Validation\Validator
      */
-    public function validationDefault(Validator $validator)
-    {
+    public function validationDefault(Validator $validator) {
         $validator
-            ->integer('id')
-            ->allowEmpty('id', 'create');
+                ->integer('id')
+                ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('nombre');
+                ->notEmpty('nombre', 'Ingrese el nombre');
 
         $validator
-            ->allowEmpty('apellido');
+                ->notEmpty('apellido', 'Ingrese el apellido');
 
         $validator
-            ->allowEmpty('numero_identidad');
+                ->notEmpty('numero_identidad', 'Ingrese el numero de identidad');
 
         $validator
-            ->allowEmpty('telefono');
+                ->numeric('telefono', 'Ingrese el telefono, solo numeros');
 
         $validator
-            ->email('email')
-            ->allowEmpty('email');
+                ->email('email', false, 'Ingrese un email valido')
+                ->notEmpty('email', 'Ingrese el email');
 
         $validator
-            ->allowEmpty('direccion');
+                ->allowEmpty('direccion');
 
         $validator
-            ->boolean('activo')
-            ->allowEmpty('activo');
+                ->boolean('activo')
+                ->allowEmpty('activo');
 
         $validator
-            ->boolean('eliminado')
-            ->allowEmpty('eliminado');
+                ->boolean('eliminado')
+                ->allowEmpty('eliminado');
 
         return $validator;
     }
@@ -94,11 +97,13 @@ class TrabajadoresTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
-    {
-        $rules->add($rules->isUnique(['email']));
+    public function buildRules(RulesChecker $rules) {
+        $rules->add($rules->isUnique(['email'], 'El email ya esta registrado'));
+        $rules->add($rules->isUnique(['numero_identidad'], 'El numero de identidad ya esta registrado'));
+        $rules->add($rules->isUnique(['telefono'], 'El telefono ya esta registrado'));
         $rules->add($rules->existsIn(['cargo_id'], 'Cargos'));
 
         return $rules;
     }
+
 }

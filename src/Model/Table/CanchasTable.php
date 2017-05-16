@@ -56,7 +56,7 @@ class CanchasTable extends Table {
                 ->allowEmpty('id', 'create');
 
         $validator
-                ->allowEmpty('nombre');
+                ->notEmpty('nombre', 'Ingrese el nombre');
 
         $validator
                 ->allowEmpty('descripcion');

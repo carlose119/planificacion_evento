@@ -35,11 +35,22 @@ class PlanificacionesController extends AppController {
             $conditions .= ' AND Planificaciones.cancha_id = "' . $cancha_id . '" ';
         }
         $this->paginate = [
+            'fields' => [
+                'Planificaciones.id',
+                'Planificaciones.evento',
+                'Planificaciones.fecha',
+                'Planificaciones.hora',
+                'Planificaciones.activo',
+                'Canchas.nombre',
+                'cantidad_trabajadores' => '(SELECT COUNT(PlanificacionDetalles.id) FROM planificacion_detalles AS PlanificacionDetalles WHERE (PlanificacionDetalles.planificacion_id = Planificaciones.id AND PlanificacionDetalles.eliminado=0))',
+                'pago_trabajadores' => '(SELECT SUM(PlanificacionDetalles.pago) FROM planificacion_detalles AS PlanificacionDetalles WHERE (PlanificacionDetalles.planificacion_id = Planificaciones.id AND PlanificacionDetalles.eliminado=0))'
+            ],
             'conditions' => 'Planificaciones.eliminado = 0' . $conditions,
             'order' => ['Planificaciones.id' => 'DESC'],
             'contain' => ['Canchas']
         ];
         $planificaciones = $this->paginate($this->Planificaciones);
+        //pj($planificaciones);
 
         $this->set(compact('planificaciones', 'fecha'));
         $this->set('_serialize', ['planificaciones']);
@@ -61,7 +72,7 @@ class PlanificacionesController extends AppController {
      * @return \Cake\Network\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null) {
+    public function view($id = null, $imprimir = false) {
         $planificacione = $this->Planificaciones->get($id, [
             'contain' => ['Canchas']
         ]);
@@ -69,6 +80,7 @@ class PlanificacionesController extends AppController {
         //pj($planificacionDetalles);
         $this->set('planificacione', $planificacione);
         $this->set('planificacionDetalles', $planificacionDetalles);
+        $this->set(compact('imprimir'));
         $this->set('_serialize', ['planificacione']);
     }
 

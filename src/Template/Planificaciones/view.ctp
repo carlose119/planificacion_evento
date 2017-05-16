@@ -49,12 +49,12 @@
             </table>
         </div><!-- /.col -->
     </div><!-- /.row -->
-    
+
     <div class="row">
         <div class="col-xs-5">
             &nbsp;
         </div>
-        
+
         <div class="col-xs-4">
             <p class="lead">Total</p>
             <div class="table-responsive">
@@ -77,3 +77,9 @@
         </div>
     </div>
 </section><!-- /.content -->
+
+<?php if ($imprimir): ?>
+    <script>
+        window.print();
+    </script>
+<?php endif; ?>

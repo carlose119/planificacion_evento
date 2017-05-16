@@ -57,7 +57,7 @@ class GroupsTable extends Table {
 
         $validator
                 ->requirePresence('name', 'create')
-                ->notEmpty('name');
+                ->notEmpty('name', 'Ingrese el nombre');
 
         $validator
                 ->boolean('eliminado')

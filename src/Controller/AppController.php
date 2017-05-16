@@ -69,7 +69,7 @@ class AppController extends Controller {
             'authError' => 'EL usuario es invalido',
             'loginRedirect' => [
                 'controller' => 'Planificaciones',
-                'action' => 'calendario'
+                'action' => 'index'
             ],
             'logoutRedirect' => '/',
             'unauthorizedRedirect' => $this->referer()

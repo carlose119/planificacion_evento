@@ -93,6 +93,17 @@
                 <li><?= $this->Html->link('<i class="fa fa-angle-double-right"></i> ' . __('Listar Planificaciones'), ['controller' => 'Planificaciones', 'action' => 'index'], ['escape' => false]) ?></li>
             </ul>
         </li>
+        
+        <li class="treeview <?php if(in_array($controller, ['TrabajadorCalificaciones'])) echo 'active'; ?>">
+            <a href="#">
+                <i class="fa fa-calendar"></i> <span>Calificaciones</span>
+                <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">                
+                <li><?= $this->Html->link('<i class="fa fa-angle-double-right"></i> ' . __('Agregar Calificación'), ['controller' => 'TrabajadorCalificaciones', 'action' => 'add'], ['escape' => false]) ?></li>
+                <li><?= $this->Html->link('<i class="fa fa-angle-double-right"></i> ' . __('Listar Calificaciones'), ['controller' => 'TrabajadorCalificaciones', 'action' => 'index'], ['escape' => false]) ?></li>
+            </ul>
+        </li>
 
         <!--<li class="active">
             <a href="index.html">

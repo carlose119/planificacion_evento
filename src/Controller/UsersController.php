@@ -45,7 +45,7 @@ class UsersController extends AppController {
     }
     
     public function home() {
-        return $this->redirect(['controller' => 'Planificaciones', 'action' => 'calendario']);
+        return $this->redirect(['controller' => 'Planificaciones', 'action' => 'index']);
     }
 
     /**

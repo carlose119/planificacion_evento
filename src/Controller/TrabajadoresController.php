@@ -25,11 +25,12 @@ class TrabajadoresController extends AppController {
      */
     public function index() {
         $this->paginate = [
-            'contain' => ['Cargos'],
+            'contain' => ['Cargos', 'Canchas'],
             'conditions' => ['Trabajadores.eliminado' => 0],
             'order' => ['Trabajadores.id' => 'DESC']
         ];
         $trabajadores = $this->paginate($this->Trabajadores);
+        //pj($trabajadores);
 
         $this->set(compact('trabajadores'));
         $this->set('_serialize', ['trabajadores']);
@@ -46,7 +47,7 @@ class TrabajadoresController extends AppController {
      */
     public function view($id = null) {
         $trabajadore = $this->Trabajadores->get($id, [
-            'contain' => ['Cargos']
+            'contain' => ['Cargos', 'Canchas']
         ]);
 
         $this->set('trabajadore', $trabajadore);
@@ -73,7 +74,8 @@ class TrabajadoresController extends AppController {
             $this->Flash->error(__('El trabajador no se pudo registrar. Por favor, intentelo de nuevo.'));
         }
         $cargos = $this->Trabajadores->Cargos->find('list', ['conditions' => ['Cargos.eliminado' => 0]]);
-        $this->set(compact('trabajadore', 'cargos', 'planificacion_id'));
+        $canchas = $this->Trabajadores->Canchas->find('list', ['valueField' => 'nombre'])->order(['nombre' => 'ASC']);
+        $this->set(compact('trabajadore', 'cargos', 'planificacion_id', 'canchas'));
         $this->set('_serialize', ['trabajadore']);
     }
 
@@ -86,19 +88,20 @@ class TrabajadoresController extends AppController {
      */
     public function edit($id = null) {
         $trabajadore = $this->Trabajadores->get($id, [
-            'contain' => []
+            'contain' => ['Canchas']
         ]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $trabajadore = $this->Trabajadores->patchEntity($trabajadore, $this->request->data);
             if ($this->Trabajadores->save($trabajadore)) {
-                $this->Flash->success(__('El trabajado no se pudo actualizar.'));
+                $this->Flash->success(__('El trabajador se actualizo.'));
                 $this->_auditoria($this->request->params['controller'], $trabajadore->id, $this->request->params['action'] . ': Edito un trabajador');
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('El trabajador no se pudo actualizar. Por favor, intentelo de nuevo.'));
         }
         $cargos = $this->Trabajadores->Cargos->find('list', ['conditions' => ['Cargos.eliminado' => 0]]);
-        $this->set(compact('trabajadore', 'cargos'));
+        $canchas = $this->Trabajadores->Canchas->find('list', ['valueField' => 'nombre'])->order(['nombre' => 'ASC']);
+        $this->set(compact('trabajadore', 'cargos', 'canchas'));
         $this->set('_serialize', ['trabajadore']);
     }
 

@@ -6,5 +6,6 @@ echo $this->Form->input('numero_identidad');
 echo $this->Form->input('telefono');
 echo $this->Form->input('email');
 echo $this->Form->input('direccion');
+echo $this->Form->input('canchas._ids', ['options' => $canchas, 'label' => 'Canchas Cercanas','type'=> 'multicheckbox', 'required' => true]);
 echo $this->Form->input('activo');
 ?>

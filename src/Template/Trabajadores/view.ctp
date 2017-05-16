@@ -26,6 +26,14 @@
             <td><?= h($trabajadore->email) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Disponible para:') ?></th>
+            <td>
+                <?php foreach ($trabajadore->canchas as $cancha): ?>
+                    * <?= h($cancha->nombre) ?><br/>
+                <?php endforeach; ?>
+            </td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($trabajadore->id) ?></td>
         </tr>

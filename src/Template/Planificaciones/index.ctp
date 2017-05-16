@@ -3,6 +3,8 @@
     <br/>
     <center>
         <?php
+        echo $this->Html->link(__('Todas'), ['action' => 'index', '*'], ['class' => 'btn btn-info']);
+        echo '&nbsp;&nbsp;&nbsp;';
         foreach ($canchas as $cancha) {
             echo $this->Html->link(__($cancha->nombre), ['action' => 'index', '*', $cancha->id], ['class' => 'btn btn-info']);
             echo '&nbsp;&nbsp;&nbsp;';
@@ -26,9 +28,9 @@
                         <th scope="col"><?= $this->Paginator->sort('cancha_id') ?></th>
                         <th scope="col"><?= $this->Paginator->sort('fecha') ?></th>
                         <th scope="col"><?= $this->Paginator->sort('hora') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('activo') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('created', 'Creado') ?></th>
-                        <th scope="col"><?= $this->Paginator->sort('modified', 'Modificado') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('cantidad_trabajadores', 'Cant. Trab.') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('pago_trabajadores', 'Pago Trab.') ?></th>
+                        <th scope="col"><?= $this->Paginator->sort('activo') ?></th>                        
                         <th scope="col" class="actions"><?= __('Acciones') ?></th>
                     </tr>
                 </thead>
@@ -39,13 +41,23 @@
                             <td><?= h($planificacione->cancha->nombre) ?></td>
                             <td><?= h($this->Time->format($planificacione->fecha, 'dd-MM-YYYY')) ?></td>
                             <td><?= h($this->Time->format($planificacione->hora, 'HH:mm:ss')) ?></td>
-                            <td><?= h($planificacione->activo == 1 ? 'Si' : 'No') ?></td>
-                            <td><?= h($this->Time->format($planificacione->created, 'dd-MM-YYYY HH:mm:ss')) ?></td>
-                            <td><?= h($this->Time->format($planificacione->modified, 'dd-MM-YYYY HH:mm:ss')) ?></td>
+                            <td><?= h($planificacione->cantidad_trabajadores) ?></td>
+                            <td><?= h($planificacione->pago_trabajadores) ?></td>
+                            <td><?= h($planificacione->activo == 1 ? 'Si' : 'No') ?></td>                            
                             <td class="actions">
-                                <?= $this->Html->link(__('Ver'), ['action' => 'view', $planificacione->id], ['class' => 'btn btn-info btn-xs']) ?>
-                                <?= $this->Html->link(__('Editar'), ['action' => 'edit', $planificacione->id], ['class' => 'btn btn-success btn-xs']) ?>
-                                <?= $this->Form->postLink(__('Eliminar'), ['action' => 'delete', $planificacione->id], ['confirm' => __('Esta seguro que quieres eliminar el registro # {0}?', $planificacione->id), 'class' => 'btn btn-danger btn-xs']) ?>
+                                <?php //echo $this->Html->link(__('Ver'), ['action' => 'view', $planificacione->id], ['class' => 'btn btn-info btn-xs']) ?>
+                                <?php //echo $this->Html->link(__('Editar'), ['action' => 'edit', $planificacione->id], ['class' => 'btn btn-success btn-xs']) ?>
+                                <?php //echo $this->Form->postLink(__('Eliminar'), ['action' => 'delete', $planificacione->id], ['confirm' => __('Esta seguro que quieres eliminar el registro # {0}?', $planificacione->id), 'class' => 'btn btn-danger btn-xs']) ?>
+
+                                <?= $this->Html->link('<i class="fa fa-users"></i>', ['controller' => 'TrabajadorCalificaciones', 'action' => 'listaCalificar', $planificacione->id], ['escape' => false, 'alt' => 'Trabajadores', 'title' => 'Trabajadores']) ?>
+                                &nbsp;
+                                <?= $this->Html->link('<i class="fa fa-print"></i>', ['action' => 'view', $planificacione->id, true], ['escape' => false, 'alt' => 'Imprimir', 'title' => 'Imprimir']) ?>
+                                &nbsp;
+                                <?= $this->Html->link($this->Html->image('view.png', ['alt' => 'Ver', 'title' => 'Ver']), ['action' => 'view', $planificacione->id], ['escape' => false]) ?>
+                                &nbsp;
+                                <?= $this->Html->link($this->Html->image('edit.png', ['alt' => 'Editar', 'title' => 'Editar']), ['action' => 'edit', $planificacione->id], ['escape' => false]) ?>
+                                &nbsp;
+                                <?= $this->Form->postLink($this->Html->image('delete.png', ['alt' => 'Eliminar', 'title' => 'Eliminar']), ['action' => 'delete', $planificacione->id], ['confirm' => __('Esta seguro que quieres eliminar el registro # {0}?', $planificacione->id), 'escape' => false]) ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -63,6 +75,6 @@
             </div>
         </div>
     <?php else: ?>
-        <h3>No hay eventos registrados para este dia/cancha.</h3>
+        <h3>No hay eventos registrados.</h3>
     <?php endif; ?>
 </div>

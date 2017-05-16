@@ -12,9 +12,10 @@
                 <th scope="col"><?= $this->Paginator->sort('apellido') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('numero_identidad') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('telefono') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('email') ?></th>
+                <!--<th scope="col"><?= $this->Paginator->sort('email') ?></th>-->
+                <th scope="col">Disponible</th>
                 <th scope="col"><?= $this->Paginator->sort('activo') ?></th>
-                <th scope="col" class="actions"><?= __('Accions') ?></th>
+                <th scope="col" class="actions"><?= __('Acciones') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -25,7 +26,12 @@
                 <td><?= h($trabajadore->apellido) ?></td>
                 <td><?= h($trabajadore->numero_identidad) ?></td>
                 <td><?= h($trabajadore->telefono) ?></td>
-                <td><?= h($trabajadore->email) ?></td>
+                <!--<td><?= h($trabajadore->email) ?></td>-->
+                <td>
+                    <?php foreach($trabajadore->canchas as $cancha): ?>
+                        * <?= h($cancha->nombre) ?><br/>
+                    <?php endforeach; ?>
+                </td>
                 <td><?= h($trabajadore->activo == 1 ? 'Si' : 'No') ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('Ver'), ['action' => 'view', $trabajadore->id], ['class' => 'btn btn-info btn-xs']) ?>

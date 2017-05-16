@@ -6,7 +6,7 @@
         <div class="box-body">
             <div class="form-group select">
                 <label>Evento:</label> <?= h($planificaciones->evento) ?>,            
-                <label>Lugar:</label> <?= h($planificaciones->lugar) ?>,            
+                <label>Lugar:</label>  ,            
                 <label>Fecha:</label> <?= h($planificaciones->fecha) ?>,
                 <label>Hora:</label> <?= h($planificaciones->hora) ?>             
             </div>
@@ -57,6 +57,7 @@
         <div class="pull-right">
             <?= $this->Html->link('<i class="fa fa-plus"></i> ' . __('Agregar Trabajador'), ['controller' => 'Trabajadores', 'action' => 'add', $planificacion_id], ['class' => 'btn btn-success', 'escape' => false]) ?>
         </div>
+        <b>Nota:</b> Solo se listan los trabajadores cercanos a la cancha (<?= h($planificaciones->cancha->nombre) ?>).
         <?= $this->Form->create($planificacionDetalle) ?>
         <div class="box-body">
             <?= $this->element('../PlanificacionDetalles/Element/input') ?>            

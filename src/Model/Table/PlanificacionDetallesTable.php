@@ -64,14 +64,16 @@ class PlanificacionDetallesTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
+        
+        $validator
+            ->numeric('trabajador_id', 'Seleccione el trabajador');
 
         $validator
             ->time('horas')
-            ->allowEmpty('horas');
+            ->notEmpty('horas', 'Seleccione la cantidad de horas');
 
         $validator
-            ->numeric('pago')
-            ->allowEmpty('pago');
+            ->numeric('pago', 'Ingrese el pago, solo numeros');
 
         $validator
             ->boolean('eliminado')
